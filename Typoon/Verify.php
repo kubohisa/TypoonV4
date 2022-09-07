@@ -154,12 +154,12 @@ class Verify {
 	*/
 	
 	// Form token.
-	public function formToken() {
+	public static function formToken() {
 		$_SESSION['TyFormToken'] = hash('ripemd160', microtime());
 		return $_SESSION['TyFormToken'];
 	}
 	
-	public function formTokenCheck($var) {
+	public static function formTokenCheck($var) {
 		if (empty($_SESSION['TyFormToken'])) {
 			return false;
 		}
