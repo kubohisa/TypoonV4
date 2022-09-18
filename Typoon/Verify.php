@@ -239,7 +239,7 @@ class Verify
 
         // 暗号化
         $this->value = openssl_encrypt(
-            $this->value,
+            "Dummy".$this->value,
             'aes-256-cbc',
             $pass,
             OPENSSL_RAW_DATA,
