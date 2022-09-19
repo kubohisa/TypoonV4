@@ -1,12 +1,30 @@
 <?php
 
 
+
+
+
+
+
+
     /*
 
     */
 
 
+
+
+
+
+
+
     // Null check.
+
+
+
+
+
+
 
 
     function sanitizer($arr)
@@ -22,18 +40,48 @@
     }
 
 
+
+
+
+
+
+
     // URL Router.
+
+
+
+
+
+
 
 
     $GET = array();
 
+
+
+
+
+
+
     $EXEC = "";
-	$URI = "";
+
+
+
+
+
+
+    $URI = "";
+
+
+
+
+
+
 
     function urlFunc($url, $func)
     {
-		global $GET, $EXEC, $URI;
-		
+        global $GET, $EXEC, $URI;
+
         // Use preg "*".
         $url = preg_replace("#\/\*(.+?)(\/|\z)#", "\/(?P<$1>.*?)$1$2", $url);
 
@@ -41,7 +89,7 @@
         $url = preg_replace("#\/\:(.+?)(\/|\z)#", "\/(?P<$1>.*?)$2", $url);
 
         // Clean get.
-       if (preg_match("#\A{$url}\z#", $URI, $arr)) {
+        if (preg_match("#\A{$url}\z#", $URI, $arr)) {
             foreach ($arr as $key_ => $value_) {
                 // URL decode & Trim.
                 $arr[$key_] = preg_replace('#\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z#u', '', urldecode($arr[$key_]));
@@ -68,9 +116,15 @@
     }
 
 
+
+
+
+
+
+
     function errorPage($code)
     {
-        if ($code !== 305) {
+        if ($code !== 503) {
             $code = 404;
         }
 
@@ -79,24 +133,66 @@
     }
 
 
+
+
+
+
+
+
     /*
 
     */
 
 
+
+
+
+
+
+
     // Setting.
+
+
+
+
+
+
 
 
     require_once("../Typoon/Router/setting.php");
 
 
+
+
+
+
+
+
     // Session Seting.
+
+
+
+
+
+
 
 
     ini_set('session.cookie_httponly', 1); // http only.
 
 
+
+
+
+
+
+
     ini_set('session.use_strict_mode', 1); // server mode only.
+
+
+
+
+
+
 
 
     if ($TyHttps === true) {
@@ -104,16 +200,46 @@
     } // if https then.
 
 
+
+
+
+
+
+
     session_name($TySessionName);
+
+
+
+
+
+
 
 
     session_start();
 
 
+
+
+
+
+
+
     session_regenerate_id();
 
 
+
+
+
+
+
+
     // Error message?
+
+
+
+
+
+
 
 
     if ($TyDebug === true) {
@@ -129,10 +255,28 @@
     }
 
 
+
+
+
+
+
+
     // HTTPS?
 
 
+
+
+
+
+
+
     $_SERVER = sanitizer($_SERVER);
+
+
+
+
+
+
 
 
     if ($TyHttps === true && empty($_SERVER['HTTPS'])) {
@@ -140,7 +284,19 @@
     }
 
 
+
+
+
+
+
+
     // Domainチェック
+
+
+
+
+
+
 
 
     if ($_SERVER['HTTP_HOST'] !== $TyDomainName) {
@@ -149,90 +305,243 @@
     }
 
 
+
+
+
+
+
+
     // ファイルがあれば、それを表示
 
+
+
+
+
+
+
     $URI = $_SERVER["REQUEST_URI"];
-	
+
+
+
+
+
+
+
     if (file_exists(".".$_SERVER["REQUEST_URI"]) && $_SERVER["REQUEST_URI"] !== "/") {
         return false;
     }
 
 
+
+
+
+
+
+
     // URLの長さチェック
+
+
+
+
 
     if (strlen($_SERVER["REQUEST_URI"]) > 1000) {
         errorPage(404);
         exit;
     }
-	
+
+
+
+
+
     // Lifeチェック
 
 
-    if ($_SERVER["REQUEST_URI"] === "/Life") {
+
+
+
+
+
+
+    if ($_SERVER["REQUEST_URI"] === "/life") {
         echo("YES.");
         exit;
     }
-	
-	
-	// logout.
-	
-	
-    if ($_SERVER["REQUEST_URI"] === "/Logout") {
-		// Delete Session.
-		$_SESSION = array();
-		if (isset($_COOKIE["PHPSESSID"])) {
-			setcookie("PHPSESSID", '', time() - 1800, '/');
-		}
-		session_destroy();
-		
-		// Go TopPage.
+
+
+
+
+
+
+
+
+    // logout.
+
+
+
+
+
+
+
+
+    if ($_SERVER["REQUEST_URI"] === "/logout") {
+        // Delete Session.
+        $_SESSION = array();
+        if (isset($_COOKIE["PHPSESSID"])) {
+            setcookie("PHPSESSID", '', time() - 1800, '/');
+        }
+        session_destroy();
+
+        // Go TopPage.
         $URI = "/";
     }
+
+
+
+
+
+
 
 
     // Nullバイトチェック
 
 
+
+
+
+
+
+
     $_GET = array();
+
+
+
+
+
+
 
 
     $_POST = sanitizer($_POST);
 
 
+
+
+
+
+
+
     $_COOKIE = sanitizer($_COOKIE);
+
+
+
+
+
+
 
 
     // md Setting.
 
 
+
+
+
+
+
+
     mb_language("Japanese");
+
+
+
+
+
+
 
 
     mb_internal_encoding("UTF-8");
 
 
+
+
+
+
+
+
     // require.
+
+
+
+
+
+
 
 
     require_once("../Typoon/Verify.php");
 
 
+
+
+
+
+
+
     Err::init();
 
 
-    require_once("../Lib/div.php");
+
+
+
+
+
+
+    require_once("../Typoon/Html.php");
+
+
+
+
+
+
+    require_once("../Typoon/Login.php");
+
+
+
+
+
+
 
 
     // EXEC.
 
 
-    require_once("../Typoon/App/exec.php");
+
+
+
+
+
+
+    require_once("../App/exec.php");
+
+
+
+
+
+
 
 
     // Not EXEC then Error page.
 
 
+
+
+
+
+
+
     errorPage(404);
+
+
+
+
+
+
 
 
     exit;

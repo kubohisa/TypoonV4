@@ -223,13 +223,13 @@ class Verify
     */
 
      public function password()
-    {
-        if (! preg_match('#\A[a-zA-Z0-9\@\%\+\$\\\/\!\#\^\~\:\.\?\-\_]+\z#', $this->value)) {
-            Err::set("password");
-        }
+     {
+         if (! preg_match('#\A[a-zA-Z0-9\@\%\+\$\\\/\!\#\^\~\:\.\?\-\_]+\z#', $this->value)) {
+             Err::set("password");
+         }
 
-        return $this;
-    }
+         return $this;
+     }
 
    // Make Password Hash.
     public function passwordHash()
@@ -256,15 +256,15 @@ class Verify
 
     */
 
+    // Form.
     public static function mode()
     {
         if (isset($_POST['mode'])) {
-			return trim($_POST['mode']);
-		}
+            return trim($_POST['mode']);
+        }
         return "";
     }
 
-    // Form.
     public static function formToken()
     {
         $_SESSION['TyFormToken'] = hash('ripemd160', microtime());
