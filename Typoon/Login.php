@@ -17,4 +17,20 @@ class Login
         header("Location: /logout");
         exit;
     }
+	
+    public static function logout()
+    {
+/*        // Delete Session.
+        $_SESSION = array();
+        if (isset($_COOKIE["PHPSESSID"])) {
+            setcookie("PHPSESSID", '', time() - 1800, '/');
+        }
+        session_destroy();
+
+        // Go TopPage.
+        $URI = "/";
+*/
+        header("Location: /logout");
+        exit;
+    }
 }

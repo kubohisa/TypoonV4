@@ -1,30 +1,11 @@
 <?php
 
 
-
-
-
-
-
-
     /*
-
     */
 
 
-
-
-
-
-
-
     // Null check.
-
-
-
-
-
-
 
 
     function sanitizer($arr)
@@ -40,42 +21,14 @@
     }
 
 
-
-
-
-
-
-
     // URL Router.
-
-
-
-
-
-
 
 
     $GET = array();
 
-
-
-
-
-
-
     $EXEC = "";
 
-
-
-
-
-
     $URI = "";
-
-
-
-
-
 
 
     function urlFunc($url, $func)
@@ -109,17 +62,11 @@
             }
 
             $EXEC = $func;
-
             require_once("../App/Action/{$func}/index.php");
+
             exit;
         }
     }
-
-
-
-
-
-
 
 
     function errorPage($code)
@@ -133,66 +80,19 @@
     }
 
 
-
-
-
-
-
-
     /*
-
     */
-
-
-
-
-
-
 
 
     // Setting.
 
-
-
-
-
-
-
-
     require_once("../Typoon/Router/setting.php");
-
-
-
-
-
-
-
 
     // Session Seting.
 
-
-
-
-
-
-
-
     ini_set('session.cookie_httponly', 1); // http only.
 
-
-
-
-
-
-
-
     ini_set('session.use_strict_mode', 1); // server mode only.
-
-
-
-
-
-
 
 
     if ($TyHttps === true) {
@@ -200,47 +100,14 @@
     } // if https then.
 
 
-
-
-
-
-
-
     session_name($TySessionName);
 
-
-
-
-
-
-
-
     session_start();
-
-
-
-
-
-
-
 
     session_regenerate_id();
 
 
-
-
-
-
-
-
     // Error message?
-
-
-
-
-
-
-
 
     if ($TyDebug === true) {
         ini_set('display_errors', 'On');
@@ -255,49 +122,16 @@
     }
 
 
-
-
-
-
-
-
     // HTTPS?
 
-
-
-
-
-
-
-
     $_SERVER = sanitizer($_SERVER);
-
-
-
-
-
-
-
 
     if ($TyHttps === true && empty($_SERVER['HTTPS'])) {
         exit;
     }
 
 
-
-
-
-
-
-
     // Domainチェック
-
-
-
-
-
-
-
 
     if ($_SERVER['HTTP_HOST'] !== $TyDomainName) {
         errorPage(404);
@@ -305,44 +139,16 @@
     }
 
 
-
-
-
-
-
-
     // ファイルがあれば、それを表示
 
-
-
-
-
-
-
     $URI = $_SERVER["REQUEST_URI"];
-
-
-
-
-
-
 
     if (file_exists(".".$_SERVER["REQUEST_URI"]) && $_SERVER["REQUEST_URI"] !== "/") {
         return false;
     }
 
 
-
-
-
-
-
-
     // URLの長さチェック
-
-
-
-
 
     if (strlen($_SERVER["REQUEST_URI"]) > 1000) {
         errorPage(404);
@@ -350,17 +156,7 @@
     }
 
 
-
-
-
     // Lifeチェック
-
-
-
-
-
-
-
 
     if ($_SERVER["REQUEST_URI"] === "/life") {
         echo("YES.");
@@ -368,20 +164,7 @@
     }
 
 
-
-
-
-
-
-
     // logout.
-
-
-
-
-
-
-
 
     if ($_SERVER["REQUEST_URI"] === "/logout") {
         // Delete Session.
@@ -396,152 +179,41 @@
     }
 
 
-
-
-
-
-
-
     // Nullバイトチェック
-
-
-
-
-
-
-
 
     $_GET = array();
 
-
-
-
-
-
-
-
     $_POST = sanitizer($_POST);
-
-
-
-
-
-
-
 
     $_COOKIE = sanitizer($_COOKIE);
 
 
-
-
-
-
-
-
     // md Setting.
 
-
-
-
-
-
-
-
     mb_language("Japanese");
-
-
-
-
-
-
-
 
     mb_internal_encoding("UTF-8");
 
 
-
-
-
-
-
-
     // require.
-
-
-
-
-
-
-
 
     require_once("../Typoon/Verify.php");
 
-
-
-
-
-
-
-
     Err::init();
 
-
-
-
-
-
-
-
     require_once("../Typoon/Html.php");
-
-
-
-
-
 
     require_once("../Typoon/Login.php");
 
 
-
-
-
-
-
-
     // EXEC.
-
-
-
-
-
-
-
 
     require_once("../App/exec.php");
 
 
-
-
-
-
-
-
     // Not EXEC then Error page.
 
-
-
-
-
-
-
-
     errorPage(404);
-
-
-
-
-
-
 
 
     exit;
