@@ -9,11 +9,11 @@ class FilePost
 		$ext = "";
 		
 		if (preg_match("#^\xFF[\xF3\xFB\xFA\xF2]#", $magic) || preg_match("#^ID3#", $magic)) {
-			$type = 'mp3';
+			$ext = 'mp3';
 		} elseif (preg_match("#^OggS#", $magic)) {
-			$type = 'ogg';
+			$ext = 'ogg';
 		} elseif (preg_match("#^ftyp#", $magic)) {
-			$type = 'mpeg4';
+			$ext = 'mpeg4';
 		}
 		
 		return $ext;
