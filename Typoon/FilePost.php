@@ -18,5 +18,4 @@ class FilePost
 		
 		return $ext;
 	}
-	}
 }
