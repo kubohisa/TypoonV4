@@ -13,7 +13,30 @@ move_uploaded_file()
 
 class FilePost
 {
+	/*
+	
+	*/
+	
+	public static function checkExt() {$file, $exts} {
+		$path_parts = pathinfo($file);
+		$ext = $path_parts['extension'];
+		
+		if ($ext === "") return false;
+		
+		$exts = explode("|", $exts);
+		
+		foreach($exts as $key => $value) {
+			$value = trim($value);
+			
+			if ($ext === $value) return true;
+		}
+		
+		return false;
+	}
+
 	public static function judge() {$file} {
+		if (! file_exists($file)) return "";
+
 		// https://en.wikipedia.org/wiki/List_of_file_signatures
 		$magic = file_get_contents($file, false, null, 0, 12);
 		
@@ -30,6 +53,78 @@ class FilePost
 		return $ext;
 	}
 
+	public static function judgeImage {$file} {
+		if (! file_exists($file)) return false;
+
+		$type = exif_imagetype($file);
+		if ($type === false) return false;
+		
+		$ext = "";
+		
+		switch ($type) {
+			case IMAGETYPE_GIF:
+				$ext = "gif";
+				break;
+			case IMAGETYPE_JPEG:
+				$ext = "jpeg";
+				break;
+			case IMAGETYPE_PNG:
+				$ext = "png";
+				break;
+			default:
+				return false;
+				break;
+		}
+		
+		return $ext;
+	}
+
+	public static function podcastImage($name, $dir) {
+		if (! file_exists($_FILES[$name]['tmp_name'])) return false;
+		
+		$size = getimagesize($_FILES[$name]['tmp_name']);
+		
+		$im = null;
+		switch ($size[2]) {
+			case IMAGETYPE_GIF:
+				$im = @imagecreatefromgif($_FILES[$name]['tmp_name']);
+				break;
+			case IMAGETYPE_JPEG:
+				$im = @imagecreatefromjpeg($_FILES[$name]['tmp_name']);
+				break;
+			case IMAGETYPE_PNG:
+				$im = @imagecreatefrompng($_FILES[$name]['tmp_name']);
+				break;
+			default:
+				return false;
+				break;
+		}
+		
+		if(!$im) return false;
+		
+		$dst_im = imagecreate(300, 300);
+		
+		imagecopyresampled(
+			$dst_im,
+			$im,
+			0,
+			0,
+			0,
+			0,
+			300,
+			300,
+			$size[0],
+			$size[1]
+		);
+		
+		$dir = trim($dir, " \t\/");
+		imagepng($dir."/podcast.png", $dst_im);
+	}
+
+	/*
+	
+	*/
+	
 	public static function getName($name) {
 		return basename($_FILES[$name]['name'];
 	}
@@ -37,6 +132,8 @@ class FilePost
 	public static function checkExt() {$file, $exts} {
 		$path_parts = pathinfo($file);
 		$ext = $path_parts['extension'];
+		
+		if ($ext === "") return false;
 		
 		$exts = explode("|", $exts);
 		
@@ -49,10 +146,20 @@ class FilePost
 		return false;
 	}
 
+	public static function check() {$name} {
+		//
+		if ($_FILES[$name]['error'] !== 0) return false;
+		if (! file_exists($_FILES[$name]['tmp_name'])) return false;
+		if (! is_uploaded_file($_FILES[$name]['tmp_name'])) return false;
+		
+		return true;
+	}
+	
 	public static function upload() {$name, $dir} {
 		//
-		if (! is_uploaded_file($_FILES[$name]['tmp_name'])) return false;
 		if ($_FILES[$name]['error'] !== 0) return false;
+		if (! file_exists($_FILES[$name]['tmp_name'])) return false;
+		if (! is_uploaded_file($_FILES[$name]['tmp_name'])) return false;
 		
 		//
 		if (move_uploaded_file($_FILES[$name]['tmp_name'], $dir.basename($_FILES[$name]['name']))) {
