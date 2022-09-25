@@ -18,16 +18,16 @@ class FilePost
 	*/
 	
 	public static function checkExt($name, $exts) {
-		$path_parts = pathinfo($_FILES[$name]['tmp_name']);
+		$path_parts = pathinfo($_FILES[$name]['name']);
 		$ext = $path_parts['extension'];
 		
 		if ($ext === "") return false;
 		
 		$exts = explode("|", $exts);
 		
+		
 		foreach($exts as $key => $value) {
 			$value = trim($value);
-			
 			if ($ext === $value) return true;
 		}
 		
@@ -55,6 +55,10 @@ class FilePost
 
 	public static function judgeImage ($name) {
 		if (! file_exists($_FILES[$name]['tmp_name'])) return false;
+		
+		//[php.ini]
+		//extension=php_mbstring.dll
+		//extension=php_exif.dll
 
 		$type = exif_imagetype($_FILES[$name]['tmp_name']);
 		if ($type === false) return false;
@@ -106,7 +110,7 @@ class FilePost
 		
 		if(!$im) return false;
 		
-		$dst_im = imagecreate(3000, 3000);
+		$dst_im = imagecreatetruecolor(3000, 3000);
 		
 		imagecopyresampled(
 			$dst_im,
