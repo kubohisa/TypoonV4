@@ -4,7 +4,9 @@ class DataFile
 {
     public static function load($file)
     {
-        return unserialize(file_get_contents('../App/Data/'.$file.'.data'));
+		if (! file_exists('../App/Data/'.$file.'.data')) return array();
+		
+		return unserialize(file_get_contents('../App/Data/'.$file.'.data'));
     }
 
     public static function save($file, $array)

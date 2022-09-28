@@ -3,6 +3,7 @@
 class Err
 {
     public static $error;
+    public static $errorKey;
 
     public static $key;
     public static $flag;
@@ -10,12 +11,25 @@ class Err
     public static function set(string $key)
     {
         self::$error[self::$key][$key] = true;
+        self::$errorKey[self::$key] = true;
         self::$flag = true;
-    }
-
+	}
+	
+    public static function flag(string $key)
+    {
+        return self::$errorKey[$key];
+	}
+	
+    public static function flagNull(string $key)
+    {
+        if ($_POST[$key] !== "" && self::$errorKey[$key]) return true;
+		return false;
+	}
+	
     public static function init()
     {
         self::$error = array();
+        self::$errorKey = array();
 
         self::$key = "";
         self::$flag = false;
@@ -35,6 +49,8 @@ class Verify
     */
     public static function set(string $key, string &$data): Verify
     {
+        Err::$errorKey[$key] = false;
+
         return new Verify($key, $data);
     }
 
@@ -135,13 +151,18 @@ class Verify
     }
 */
 
-    public function null()
+    public function empty()
     {
-        if (empty($this->value) || $this->value === "") {
-            Err::set("Null");
+        if ($this->value === "") {
+            Err::set("empty");
         }
 
         return $this;
+    }
+
+    public function null()
+    {
+        return self::null();
     }
 
     //
@@ -167,6 +188,15 @@ class Verify
     {
         if (mb_strlen($this->value) < $var) {
             Err::set("lenMin");
+        }
+
+        return $this;
+    }
+
+    public function length($min, $max)
+    {
+        if (mb_strlen($this->value) < $min || mb_strlen($this->value) > $max) {
+            Err::set("length");
         }
 
         return $this;
@@ -209,10 +239,46 @@ class Verify
         return $this;
     }
 
+    public function match($preg)
+    {
+        if (! preg_match('#'.$preg.'#', $this->value)) {
+            Err::set("match:".$preg);
+        }
+
+        return $this;
+    }
+
     public function url()
     {
         if (! preg_match('#\Ahttps?://[\w/:%#\$&\?\(\)~\.=\+\-]+\z#', $this->value)) {
             Err::set("url");
+        }
+
+        return $this;
+    }
+
+    public function alpha()
+    {
+        if (! preg_match('#\A[a-zA-Z]+\z#', $this->value)) {
+            Err::set("alpha");
+        }
+
+        return $this;
+    }
+
+    public function digit()
+    {
+        if (! preg_match('#\A[0-9]+\z#', $this->value)) {
+            Err::set("digit");
+        }
+
+        return $this;
+    }
+
+    public function alphanumeric()
+    {
+        if (! preg_match('#\A[a-zA-Z0-9]+\z#', $this->value)) {
+            Err::set("alphanumeric");
         }
 
         return $this;
