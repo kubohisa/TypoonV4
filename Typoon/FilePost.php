@@ -18,19 +18,24 @@ class FilePost
 	*/
 	
 	public static function checkExt($name, $exts) {
+		if (! file_exists($_FILES[$name]['tmp_name'])) return false;
+
 		$path_parts = pathinfo($_FILES[$name]['name']);
 		$ext = $path_parts['extension'];
 		
 		if ($ext === "") return false;
 		
-		$exts = explode("|", $exts);
+/*		$exts = explode("|", $exts);
 		
 		
 		foreach($exts as $key => $value) {
 			$value = trim($value);
 			if ($ext === $value) return true;
 		}
-		
+*/
+
+		if (! preg_match("#\A[a-zA-Z0-9\|]+\z#", $exts)) return false;
+		if (preg_match("#\A({$exts})\z#", $ext)) return true;
 		return false;
 	}
 
@@ -54,6 +59,8 @@ class FilePost
 	}
 
 	public static function judgeImage ($name) {
+		// 画像ファイルかどうかは podcastImage() でも調べられる
+		
 		if (! file_exists($_FILES[$name]['tmp_name'])) return false;
 		
 		//[php.ini]
