@@ -30,13 +30,15 @@ class Err
 	//
     public static function flag(string $key)
     {
-		if (self::$required[$key] === true) return self::$errorKey[$key];
-		
-        if ($_POST[$key] !== "" && self::$errorKey[$key]) return true;
+		if (self::$required[$key] === true) {
+			return self::$errorKey[$key];
+		} elseif ($_POST[$key] !== "") {
+			return self::$errorKey[$key];
+		}
 		return false;
 	}
 	
-    public static function required()
+    static function required()
     {
         self::$required[self::$key] = true;
 		return;
