@@ -4,10 +4,12 @@ class Err
 {
     public static $error;
     public static $errorKey;
+    public static $required;
 
     public static $key;
     public static $flag;
-
+	
+	//
     public static function set(string $key)
     {
         self::$error[self::$key][$key] = true;
@@ -15,25 +17,30 @@ class Err
         self::$flag = true;
 	}
 	
-    public static function flag(string $key)
-    {
-        return self::$errorKey[$key];
-	}
-	
-    public static function flagNull(string $key)
-    {
-        if ($_POST[$key] !== "" && self::$errorKey[$key]) return true;
-		return false;
-	}
-	
     public static function init()
     {
         self::$error = array();
         self::$errorKey = array();
+        self::$required = array();
 
         self::$key = "";
         self::$flag = false;
     }
+	
+	//
+    public static function flag(string $key)
+    {
+		if (self::$required[$key] === true) return self::$errorKey[$key];
+		
+        if ($_POST[$key] !== "" && self::$errorKey[$key]) return true;
+		return false;
+	}
+	
+    public static function required()
+    {
+        self::$required[self::$key] = true;
+		return;
+	}
 }
 
 class Verify
@@ -50,6 +57,7 @@ class Verify
     public static function set(string $key, string &$data): Verify
     {
         Err::$errorKey[$key] = false;
+        Err::$required[$key] = false;
 
         return new Verify($key, $data);
     }
@@ -130,6 +138,8 @@ class Verify
 
     public function required()
     {
+		Err::required();
+
         if (empty($this->value)) {
             Err::set("required");
         }
@@ -239,10 +249,10 @@ class Verify
         return $this;
     }
 
-    public function match($preg)
+    public function match($name, $preg)
     {
         if (! preg_match('#'.$preg.'#', $this->value)) {
-            Err::set("match:".$preg);
+            Err::set("match:".$name);
         }
 
         return $this;
