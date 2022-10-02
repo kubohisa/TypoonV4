@@ -6,7 +6,10 @@ class DataFile
     {
 		if (! file_exists('../App/Data/'.$dir.$file.'.data')) return array();
 		
-		return unserialize(file_get_contents('../App/Data/'.$dir.$file.'.data'));
+		$data = unserialize(file_get_contents('../App/Data/'.$dir.$file.'.data'));
+		if (isset($data[0])) $data = $data[0];
+		
+		return $data;
     }
 
     public static function save($file, $array, $dir = "")
