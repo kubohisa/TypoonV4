@@ -47,7 +47,7 @@ class FilePost
 		
 		$ext = "";
 		
-		if (preg_match("\A\xFF[\xF3\xFB\xFA\xF2]#", $magic) || preg_match("#\AID3#", $magic)) {
+		if (preg_match("#\A\xFF[\xF3\xFB\xFA\xF2]#", $magic) || preg_match("#\AID3#", $magic)) {
 			$ext = 'mp3';
 		} elseif (preg_match("#\AOggS#", $magic)) {
 			$ext = 'ogg';

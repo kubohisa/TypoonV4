@@ -43,6 +43,12 @@ class Err
         self::$required[self::$key] = true;
 		return;
 	}
+	
+    static function empty()
+    {
+        self::$required[self::$key] = false;
+		return;
+	}
 }
 
 class Verify
@@ -100,7 +106,7 @@ class Verify
         return $this;
     }
 
-    public function toBR()
+    public function toBr()
     {
         $this->value = nl2br($this->value);
 
@@ -154,29 +160,24 @@ class Verify
         return self::required();
     }
 
-/*	public function notNull() {
-        if ($this->value ~== null) {
-            Err::set("notNull");
-        }
-
-        return $this;
+	public function notNull()
+	{
+        return self::required();
     }
-*/
 
-    public function empty()
+
+    public function empty() // プログラムを見やすくするためのダミーメゾッド
     {
-        if ($this->value === "") {
-            Err::set("empty");
-        }
+		Err::empty();
 
         return $this;
     }
 
-    public function null()
+/*    public function null()
     {
         return self::null();
     }
-
+*/
     //
     public function len($var)
     {
