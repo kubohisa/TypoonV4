@@ -199,8 +199,6 @@
 
     require_once("../Typoon/Verify.php");
 
-    Err::init();
-
     require_once("../Typoon/Html.php");
 
     require_once("../Typoon/Login.php");

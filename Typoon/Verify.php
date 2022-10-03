@@ -1,5 +1,7 @@
 <?php
 
+Err::init();
+
 class Err
 {
     public static $error;
