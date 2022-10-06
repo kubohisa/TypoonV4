@@ -346,26 +346,28 @@ class Verify
         return "";
     }
 
-    static function ipToken()
+    public static function ipToken()
     {
-		return hash('ripemd160', 
-			$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'].$_SERVER['HTTP_ACCEPT_LANGUAGE']
-			.$_SERVER['REMOTE_PORT']);
-		// ブラウザーの情報等を保存せずにハッシュ化
-		// スマホなどはipアドレスが変化する可能性があるので、フォーム作成時ハッシュ作成
+        return hash(
+            'ripemd160',
+            $_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'].$_SERVER['HTTP_ACCEPT_LANGUAGE']
+            .$_SERVER['REMOTE_PORT']
+        );
+        // ブラウザーの情報等を保存せずにハッシュ化
+        // スマホなどはipアドレスが変化する可能性があるので、フォーム作成時ハッシュ作成
     }
-	
+
     public static function formToken()
     {
-		$_SESSION['TyIpToken'] = self::ipToken();
-		
+        $_SESSION['TyIpToken'] = self::ipToken();
+
         $_SESSION['TyFormToken'] = hash('ripemd160', microtime());
         return $_SESSION['TyFormToken'];
     }
 
     public static function formTokenCheck($var)
     {
-		//
+        //
         if (empty($_SESSION['TyIpToken'])) {
             return false;
         }
@@ -376,8 +378,8 @@ class Verify
         if ($check === self::ipToken()) {
             return true;
         }
-		
-		//
+
+        //
         if (empty($_SESSION['TyFormToken'])) {
             return false;
         }
