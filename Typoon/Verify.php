@@ -10,15 +10,15 @@ class Err
 
     public static $key;
     public static $flag;
-	
-	//
+
+    //
     public static function set(string $key)
     {
         self::$error[self::$key][$key] = true;
         self::$errorKey[self::$key] = true;
         self::$flag = true;
-	}
-	
+    }
+
     public static function init()
     {
         self::$error = array();
@@ -28,29 +28,29 @@ class Err
         self::$key = "";
         self::$flag = false;
     }
-	
-	//
+
+    //
     public static function flag(string $key)
     {
-		if (self::$required[$key] === true) {
-			return self::$errorKey[$key];
-		} elseif ($_POST[$key] !== "") {
-			return self::$errorKey[$key];
-		}
-		return false;
-	}
-	
-    static function required()
+        if (self::$required[$key] === true) {
+            return self::$errorKey[$key];
+        } elseif ($_POST[$key] !== "") {
+            return self::$errorKey[$key];
+        }
+        return false;
+    }
+
+    public static function required()
     {
         self::$required[self::$key] = true;
-		return;
-	}
-	
-    static function empty()
+        return;
+    }
+
+    public static function empty()
     {
         self::$required[self::$key] = false;
-		return;
-	}
+        return;
+    }
 }
 
 class Verify
@@ -148,7 +148,7 @@ class Verify
 
     public function required()
     {
-		Err::required();
+        Err::required();
 
         if (empty($this->value)) {
             Err::set("required");
@@ -162,15 +162,15 @@ class Verify
         return self::required();
     }
 
-	public function notNull()
-	{
+    public function notNull()
+    {
         return self::required();
     }
 
 
     public function empty() // プログラムを見やすくするためのダミーメゾッド
     {
-		Err::empty();
+        Err::empty();
 
         return $this;
     }
@@ -312,7 +312,7 @@ class Verify
          return $this;
      }
 
-   // Make Password Hash.
+    // Make Password Hash.
     public function passwordHash()
     {
         $pass = 'password';
@@ -346,14 +346,38 @@ class Verify
         return "";
     }
 
+    static function ipToken()
+    {
+		return hash('ripemd160', 
+			$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'].$_SERVER['HTTP_ACCEPT_LANGUAGE']
+			.$_SERVER['REMOTE_PORT']);
+		// ブラウザーの情報等を保存せずにハッシュ化
+		// スマホなどはipアドレスが変化する可能性があるので、フォーム作成時ハッシュ作成
+    }
+	
     public static function formToken()
     {
+		$_SESSION['TyIpToken'] = self::ipToken();
+		
         $_SESSION['TyFormToken'] = hash('ripemd160', microtime());
         return $_SESSION['TyFormToken'];
     }
 
     public static function formTokenCheck($var)
     {
+		//
+        if (empty($_SESSION['TyIpToken'])) {
+            return false;
+        }
+
+        $check = $_SESSION['TyIpToken'];
+        unset($_SESSION['TyIpToken']);
+
+        if ($check === self::ipToken()) {
+            return true;
+        }
+		
+		//
         if (empty($_SESSION['TyFormToken'])) {
             return false;
         }
