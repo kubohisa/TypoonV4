@@ -265,7 +265,7 @@ class Verify
 
     public function url()
     {
-        if (! preg_match('#\Ahttps?://[\w/:%#\$&\?\(\)~\.=\+\-]+\z#', $this->value)) {
+        if (! preg_match('#\Ahttps?://[\w\:\%\#\$\&\?\(\)\~\.\=\+\-\/\S]+\z#', $this->value)) {
             Err::set("url");
         }
 
