@@ -349,10 +349,10 @@ class Verify
     public static function ipToken()
     {
         $ip = "";
-        if (isset($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
@@ -360,7 +360,6 @@ class Verify
         return hash(
             'ripemd160',
             $ip.$_SERVER['HTTP_USER_AGENT'].$_SERVER['HTTP_ACCEPT_LANGUAGE']
-            .$_SERVER['REMOTE_PORT']
         );
         // ブラウザーの情報等を保存せずにハッシュ化
         // スマホなどはipアドレスが変化する可能性があるので、フォーム作成時ハッシュ作成
@@ -381,12 +380,8 @@ class Verify
             return false;
         }
 
-        $check = $_SESSION['TyIpToken'];
+        $ipcheck = $_SESSION['TyIpToken'];
         unset($_SESSION['TyIpToken']);
-
-        if ($check === self::ipToken()) {
-            return true;
-        }
 
         //
         if (empty($_SESSION['TyFormToken'])) {
@@ -396,7 +391,7 @@ class Verify
         $check = $_SESSION['TyFormToken'];
         unset($_SESSION['TyFormToken']);
 
-        if ($check === $var) {
+        if ($check === $var && $ipcheck === self::ipToken()) {
             return true;
         }
         return false;
