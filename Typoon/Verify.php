@@ -181,7 +181,36 @@ class Verify
         return self::null();
     }
 */
-    //
+
+    /*
+	
+	*/
+	
+    public function int()
+    {
+		$this->value = (int)$this->value;
+
+        return $this;
+    }
+
+    public function float()
+    {
+		$this->value = (float)$this->value;
+
+        return $this;
+    }
+
+    public function string()
+    {
+		$this->value = (string)$this->value;
+
+        return $this;
+    }
+
+    /*
+	
+	*/
+	
     public function len($var)
     {
         if (mb_strlen($this->value) === $var) {
