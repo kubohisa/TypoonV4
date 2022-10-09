@@ -1,12 +1,10 @@
 <?php
 
-
     /*
+
     */
 
-
     // Null check.
-
 
     function sanitizer($arr)
     {
@@ -20,16 +18,13 @@
         return $arr;
     }
 
-
     // URL Router.
-
 
     $GET = array();
 
     $EXEC = "";
 
     $URI = "";
-
 
     function urlFunc($url, $func)
     {
@@ -68,7 +63,6 @@
         }
     }
 
-
     function errorPage($code)
     {
         if ($code !== 503) {
@@ -79,10 +73,9 @@
         exit;
     }
 
-
     /*
-    */
 
+    */
 
     // Setting.
 
@@ -94,18 +87,15 @@
 
     ini_set('session.use_strict_mode', 1); // server mode only.
 
-
     if ($TyHttps === true) {
         ini_set('session.cookie_secure', 0);
     } // if https then.
-
 
     session_name($TySessionName);
 
     session_start();
 
     session_regenerate_id();
-
 
     // Error message?
 
@@ -121,7 +111,6 @@
         ini_set('log_errors', 'On');
     }
 
-
     // HTTPS?
 
     $_SERVER = sanitizer($_SERVER);
@@ -130,14 +119,12 @@
         exit;
     }
 
-
     // Domainチェック
 
     if ($_SERVER['HTTP_HOST'] !== $TyDomainName) {
         errorPage(404);
         exit;
     }
-
 
     // ファイルがあれば、それを表示
 
@@ -147,7 +134,6 @@
         return false;
     }
 
-
     // URLの長さチェック
 
     if (strlen($_SERVER["REQUEST_URI"]) > 1000) {
@@ -155,14 +141,12 @@
         exit;
     }
 
-
     // Lifeチェック
 
     if ($_SERVER["REQUEST_URI"] === "/life") {
         echo("YES.");
         exit;
     }
-
 
     // logout.
 
@@ -178,7 +162,6 @@
         $URI = "/";
     }
 
-
     // Nullバイトチェック
 
     $_GET = array();
@@ -187,31 +170,28 @@
 
     $_COOKIE = sanitizer($_COOKIE);
 
-
     // md Setting.
 
     mb_language("Japanese");
 
     mb_internal_encoding("UTF-8");
 
-
     // require.
 
     require_once("../Typoon/Verify.php");
+	
+    require_once("../Typoon/Form.php");
 
     require_once("../Typoon/Html.php");
 
     require_once("../Typoon/Login.php");
 
-
     // EXEC.
 
     require_once("../App/exec.php");
 
-
     // Not EXEC then Error page.
 
     errorPage(404);
-
 
     exit;
