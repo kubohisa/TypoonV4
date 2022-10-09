@@ -151,7 +151,7 @@ class Verify
     {
         Err::required();
 
-        if (empty($this->value)) {
+        if (empty($this->value) && $this->value !== 0 && $this->value !== "0") {
             Err::set("required");
         }
 
@@ -240,6 +240,19 @@ class Verify
 
         if ($this->value < (int)$var) {
             Err::set("min");
+        }
+
+        return $this;
+    }
+
+    public function minMax($min, $max)
+    {
+        if (! is_numeric($min) ||! is_numeric($max)) {
+            Err::set("digit");
+        }
+
+        if ($this->value < (int)$min || $this->value > (int)$max) {
+            Err::set("minMax");
         }
 
         return $this;
@@ -396,5 +409,23 @@ class Verify
             return true;
         }
         return false;
+    }
+	
+	//
+    public static function formSelect($array, $no = -1)
+    {
+		$html = ""; $count = 0;
+		
+		foreach($array as $value) {
+			if ($count == $no) {
+				$html .= "  <option value=\"{$count}\" selected>{$value}</option>\n";
+			} else {
+				$html .= "  <option value=\"{$count}\">{$value}</option>\n";
+			}
+
+			$count++;
+		}
+		
+		return $html;
     }
 }
