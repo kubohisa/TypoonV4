@@ -223,6 +223,7 @@ class Verify
     {
         if (! is_numeric($var)) {
             Err::set("digit");
+			return $this;
         }
 
         if ($this->value > (int)$var) {
@@ -236,6 +237,7 @@ class Verify
     {
         if (! is_numeric($var)) {
             Err::set("digit");
+			return $this;
         }
 
         if ($this->value < (int)$var) {
@@ -247,8 +249,9 @@ class Verify
 
     public function minMax($min, $max)
     {
-        if (! is_numeric($min) ||! is_numeric($max)) {
+        if (! is_numeric($min) || ! is_numeric($max)) {
             Err::set("digit");
+			return $this;
         }
 
         if ($this->value < (int)$min || $this->value > (int)$max) {
@@ -297,7 +300,7 @@ class Verify
 
     public function digit()
     {
-        if (! preg_match('#\A[0-9]+\z#', $this->value)) {
+        if (! is_numeric($this->value)) {
             Err::set("digit");
         }
 
