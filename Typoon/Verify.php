@@ -92,7 +92,8 @@ class Verify
 
     public function plain()
     {
-        $this->value = preg_replace('#\A[\p{C}\p{Z}]+?(\p{Z}|)|[\p{C}\p{Z}]++\z#u', '', $this->value);
+        $this->value = preg_replace("#(\r\n)+#", "\r\n\r\n", $this->value);
+        $this->value = preg_replace('#\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z#u', '', $this->value);
 
         return $this;
     }
