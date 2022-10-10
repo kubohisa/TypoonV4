@@ -94,13 +94,15 @@ class Verify
     {
         $this->value = preg_replace("#(\r\n)+#", "\r\n\r\n", $this->value);
         $this->value = preg_replace('#\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z#u', '', $this->value);
-		
-		$array = explode("\r\n", $this->value);
-		foreach($array as $key => $value) {
-			$array[$key] = preg_replace('#\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z#u', '', $value);
-			if ($array[$key] !== "") $array[$key] = "　".$array[$key];
-		}
-		$this->value = implode("\r\n", $array);
+
+        $array = explode("\r\n", $this->value);
+        foreach ($array as $key => $value) {
+            $array[$key] = preg_replace('#\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z#u', '', $value);
+            if ($array[$key] !== "") {
+                $array[$key] = "　".$array[$key];
+            }
+        }
+        $this->value = implode("\r\n", $array);
 
         return $this;
     }
@@ -190,34 +192,34 @@ class Verify
 */
 
     /*
-	
-	*/
-	
+
+    */
+
     public function int()
     {
-		$this->value = (int)$this->value;
+        $this->value = (int)$this->value;
 
         return $this;
     }
 
     public function float()
     {
-		$this->value = (float)$this->value;
+        $this->value = (float)$this->value;
 
         return $this;
     }
 
     public function string()
     {
-		$this->value = (string)$this->value;
+        $this->value = (string)$this->value;
 
         return $this;
     }
 
     /*
-	
-	*/
-	
+
+    */
+
     public function len($var)
     {
         if (mb_strlen($this->value) === $var) {
@@ -259,7 +261,7 @@ class Verify
     {
         if (! is_numeric($var)) {
             Err::set("digit");
-			return $this;
+            return $this;
         }
 
         if ($this->value > (int)$var) {
@@ -273,7 +275,7 @@ class Verify
     {
         if (! is_numeric($var)) {
             Err::set("digit");
-			return $this;
+            return $this;
         }
 
         if ($this->value < (int)$var) {
@@ -287,7 +289,7 @@ class Verify
     {
         if (! is_numeric($min) || ! is_numeric($max)) {
             Err::set("digit");
-			return $this;
+            return $this;
         }
 
         if ($this->value < (int)$min || $this->value > (int)$max) {
