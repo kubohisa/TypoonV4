@@ -61,22 +61,23 @@ class Form
         }
         return false;
     }
-	
-	//
+
+    //
     public static function select($array, $no = -1)
     {
-		$html = ""; $count = 0;
-		
-		foreach($array as $value) {
-			if ($count == $no) {
-				$html .= "  <option value=\"{$count}\" selected>{$value}</option>\n";
-			} else {
-				$html .= "  <option value=\"{$count}\">{$value}</option>\n";
-			}
+        $html = "";
+        $count = 0;
 
-			$count++;
-		}
-		
-		return $html;
+        foreach ($array as $value) {
+            if ($count == $no) {
+                $html .= "  <option value=\"{$count}\" selected>{$value}</option>\n";
+            } else {
+                $html .= "  <option value=\"{$count}\">{$value}</option>\n";
+            }
+
+            $count++;
+        }
+
+        return $html;
     }
 }

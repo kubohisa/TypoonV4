@@ -98,6 +98,20 @@ class Verify
         $array = explode("\r\n", $this->value);
         foreach ($array as $key => $value) {
             $array[$key] = preg_replace('#\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z#u', '', $value);
+        }
+        $this->value = implode("\r\n", $array);
+
+        return $this;
+    }
+
+    public function japaneseText()
+    {
+        $this->value = preg_replace("#(\r\n)+#", "\r\n\r\n", $this->value);
+        $this->value = preg_replace('#\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z#u', '', $this->value);
+
+        $array = explode("\r\n", $this->value);
+        foreach ($array as $key => $value) {
+            $array[$key] = preg_replace('#\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z#u', '', $value);
             if ($array[$key] !== "") {
                 $array[$key] = "　".$array[$key];
             }
