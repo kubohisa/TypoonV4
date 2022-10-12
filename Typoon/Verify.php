@@ -367,16 +367,17 @@ class Verify
 
         return $this;
     }
-	
-	/*
-	
-	*/
-	public function date()
+
+    /*
+
+    */
+
+    public function date()
     {
-		$this->value = date('Y年m月d日 H時i分s秒', $this->value);
+        $this->value = date('Y年m月d日 H時i分s秒', $this->value);
 
         return $this;
-    }　// 仮組み
+    } // 仮組み
 
     /*
 
