@@ -5,7 +5,13 @@ class Login
     public static function set($id)
     {
         $_SESSION['LoginId'] = $id;
-        $_SESSION['LoginToken'] = hash('ripemd160', $id.$_SERVER['REMOTE_ADDR'].microtime().rand());
+        $_SESSION['uuId'] = hash('sha512', 
+									hash('sha512', $id)."_".
+									hash('sha512', "NameSpace")."_".
+								//	hash('sha512', $_SERVER['REMOTE_ADDR'])."_".
+									hash('sha512', microtime())."_".
+									hash('sha512', rand())
+								);
     }
 
     public static function check()
