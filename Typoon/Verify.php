@@ -372,11 +372,11 @@ class Verify
 
     */
 
-    public function time()
+    public function dateNow()
     {
         $this->value = time();
 
-        return $this;
+        self::date();
     } // 仮組み
 
     public function date()
