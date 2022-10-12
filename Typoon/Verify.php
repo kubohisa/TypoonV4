@@ -367,19 +367,29 @@ class Verify
 
         return $this;
     }
+	
+	/*
+	
+	*/
+	public function date()
+    {
+		$this->value = date('Y年m月d日 H時i分s秒', $this->value);
+
+        return $this;
+    }　// 仮組み
 
     /*
 
     */
 
-     public function password()
-     {
-         if (! preg_match('#\A[a-zA-Z0-9\@\%\+\$\\\/\!\#\^\~\:\.\?\-\_]+\z#', $this->value)) {
-             Err::set("password");
-         }
+    public function password()
+    {
+        if (! preg_match('#\A[a-zA-Z0-9\@\%\+\$\\\/\!\#\^\~\:\.\?\-\_]+\z#', $this->value)) {
+            Err::set("password");
+        }
 
-         return $this;
-     }
+        return $this;
+    }
 
     // Make Password Hash.
     public function passwordHash()
