@@ -18,6 +18,7 @@ class Login
 
         //
         $_SESSION['guId'] = substr(substr_replace($_SESSION['uuId'], 'A', 16, 1), 0, 32);
+//      $_SESSION['guId'] = substr_replace($_SESSION['guId'], '4', 12, 1); // uuid V4
         $_SESSION['guId'] = preg_replace('#\A(.{8})(.{4})(.{4})(.{4})(.{12})#', '$1-$2-$3-$4-$5', $_SESSION['guId']);
     }
 
