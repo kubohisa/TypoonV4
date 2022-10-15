@@ -134,6 +134,13 @@
         return false;
     }
 
+    // URLの文字チェック
+
+    if (preg_match("#\A[A-Za-z0-9\-\.\_\~]+\/\%\#\z#", $_SERVER["REQUEST_URI"])) {
+        errorPage(404);
+        exit;
+    }
+
     // URLの長さチェック
 
     if (strlen($_SERVER["REQUEST_URI"]) > 1000) {
@@ -179,7 +186,7 @@
     // require.
 
     require_once("../Typoon/Verify.php");
-	
+
     require_once("../Typoon/Form.php");
 
     require_once("../Typoon/Html.php");
