@@ -136,7 +136,7 @@
 
     // URLの文字チェック
 
-    if (preg_match("#\A[A-Za-z0-9\-\.\_\~]+\/\%\#\z#", $_SERVER["REQUEST_URI"])) {
+    if (! preg_match("#\A[A-Za-z0-9\-\.\_\~\/\%]+\z#", $_SERVER["REQUEST_URI"])) {
         errorPage(404);
         exit;
     }
