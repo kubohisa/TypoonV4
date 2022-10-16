@@ -234,14 +234,23 @@ class Verify
 
     */
 
-    public function len($var)
+    public function equal($var)
     {
-        if (mb_strlen($this->value) === $var) {
-            Err::set("len");
+        if ($this->value !== $var) {
+            Err::set("equal");
         }
 
         return $this;
     }
+
+     public function len($var)
+     {
+        if (mb_strlen($this->value) === $var) {
+             Err::set("len");
+        }
+
+         return $this;
+     }
 
     public function lenMax($var)
     {
@@ -323,7 +332,7 @@ class Verify
         return $this;
     }
 
-    public function match($name, $preg)
+    public function pregMatch($name, $preg)
     {
         if (! preg_match('#'.$preg.'#', $this->value)) {
             Err::set("match:".$name);
@@ -371,6 +380,13 @@ class Verify
     /*
 
     */
+
+    public function time()
+    {
+        $this->value = time();
+
+        return $this;
+    } // 仮組み
 
     public function dateNow()
     {

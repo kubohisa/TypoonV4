@@ -166,7 +166,9 @@
         session_destroy();
 
         // Go TopPage.
-        $URI = "/";
+//        header("Location: /logout.html");
+        header("Location: /");
+        exit;
     }
 
     // Nullバイトチェック
