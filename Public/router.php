@@ -185,6 +185,10 @@
 
     mb_internal_encoding("UTF-8");
 
+    // Timezone24.
+
+    date_default_timezone_set('Asia/Tokyo');
+
     // require.
 
     require_once("../Typoon/Verify.php");
@@ -197,7 +201,7 @@
 
     // EXEC.
 
-    require_once("../App/exec.php");
+    require_once("../Typoon/Router/exec.php");
 
     // Not EXEC then Error page.
 

@@ -209,6 +209,22 @@ class Verify
 
     */
 
+    public function add($var)
+    {
+        if (! is_numeric($var)) {
+            Err::set("add");
+            return $this;
+        }
+
+        $this->value += (int)$var;
+
+        return $this;
+    }
+
+    /*
+
+    */
+
     public function int()
     {
         $this->value = (int)$this->value;
@@ -243,14 +259,14 @@ class Verify
         return $this;
     }
 
-     public function len($var)
-     {
+    public function len($var)
+    {
         if (mb_strlen($this->value) === $var) {
-             Err::set("len");
+            Err::set("len");
         }
 
-         return $this;
-     }
+        return $this;
+    }
 
     public function lenMax($var)
     {
