@@ -126,9 +126,20 @@
         exit;
     }
 
-    // ファイルがあれば、それを表示
+    // 直接読み込みファイル処理
 
     $URI = $_SERVER["REQUEST_URI"];
+
+    if ($URI === "/Router.php") {
+        errorPage(404);
+        exit;
+    }
+
+    if ($URI === "/favicon.ico") {
+        exit;
+    }
+
+    // ファイルがあれば、それを表示
 
     if (file_exists(".".$_SERVER["REQUEST_URI"]) && $_SERVER["REQUEST_URI"] !== "/") {
         return false;

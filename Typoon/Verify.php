@@ -216,7 +216,7 @@ class Verify
             return $this;
         }
 
-        $this->value += (int)$var;
+        $this->value += $var;
 
         return $this;
     }
@@ -380,6 +380,8 @@ class Verify
         if (! is_numeric($this->value)) {
             Err::set("digit");
         }
+
+        // int()?
 
         return $this;
     }

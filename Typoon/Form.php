@@ -128,8 +128,13 @@ class Form
         return mktime($h, $i, 0, $m, $d, $y);
     }
 
-    public static function selectDate($y, $m, $d, $h, $i)
+    public static function selectDate($y, $m, $d, $h, $i, $name = "")
     {
+        //
+        if ($name !== "") {
+            $name = "_".$name;
+        }
+
         //
         if ($y < 2022 || $y > 2023) {
             $y = 2022;
@@ -154,30 +159,33 @@ class Form
         //
         $html = '<div class="row">';
 
-        $html .= '<div class="col"><select class="form-select" name="year">'.Form::select(
+        $html .= '<div class="col"><select class="form-select" name="year'.$name.'">'.Form::select(
             [
                     2022, 2023
                 ],
-            $y, 2022
+            $y,
+            2022
         )."</select> 年 </div>";
 
-        $html .= '<div class="col"><select class="form-select" name="month">'.Form::select(
+        $html .= '<div class="col"><select class="form-select" name="month'.$name.'">'.Form::select(
             [
                     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
                 ],
-            $m, 1
+            $m,
+            1
         )."</select> 月 </div>";
 
-        $html .= '<div class="col"><select class="form-select" name="day">'.Form::select(
+        $html .= '<div class="col"><select class="form-select" name="day'.$name.'">'.Form::select(
             [
                     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                     11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
                     21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
                 ],
-            $d, 1
+            $d,
+            1
         )."</select> 日 </div>";
 
-        $html .= '<div class="col"><select class="form-select" name="hour">'.Form::select(
+        $html .= '<div class="col"><select class="form-select" name="hour'.$name.'">'.Form::select(
             [
                     0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                     10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -186,7 +194,7 @@ class Form
             $h
         )."</select> 時 </div>";
 
-        $html .= '<div class="col"><select class="form-select" name="minute">'.Form::select(
+        $html .= '<div class="col"><select class="form-select" name="minute'.$name.'">'.Form::select(
             [
                     0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                     10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
