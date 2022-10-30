@@ -135,14 +135,14 @@
         exit;
     }
 
-    if ($URI === "/favicon.ico") {
-        exit;
-    }
-
     // ファイルがあれば、それを表示
 
     if (file_exists(".".$_SERVER["REQUEST_URI"]) && $_SERVER["REQUEST_URI"] !== "/") {
         return false;
+    }
+
+    if ($URI === "/favicon.ico") {
+        exit;
     }
 
     // URLの文字チェック
