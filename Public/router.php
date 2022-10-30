@@ -126,7 +126,7 @@
         exit;
     }
 
-    // 直接読み込みファイル処理
+    // ファイルがあれば、それを表示
 
     $URI = $_SERVER["REQUEST_URI"];
 
@@ -135,14 +135,12 @@
         exit;
     }
 
-    // ファイルがあれば、それを表示
-
     if (file_exists(".".$_SERVER["REQUEST_URI"]) && $_SERVER["REQUEST_URI"] !== "/") {
         return false;
     }
 
     if ($URI === "/favicon.ico") {
-        exit;
+        return false;
     }
 
     // URLの文字チェック
