@@ -1,62 +1,25 @@
 <?php
 
-Err::init();
-
-class Err
-{
-    public static $error;
-    public static $flag;
-    public static $required;
-
-    //
-    public static function set(string $key)
-    {
-        self::$error[$key] = true;
-
-        self::$flag = true;
-    }
-
-    public static function init()
-    {
-        //
-        self::$error = array();
-
-        self::$flag = false;
-
-        self::$required = false;
-    }
-
-    //
-    public static function flag(string $key)
-    {
-        if (self::$required === true) {
-            return self::$flag;
-        } elseif ($_POST[$key] !== "") {
-            return self::$flag;
-        }
-        return false;
-    }
-
-    public static function required()
-    {
-        self::$required = true;
-        return;
-    }
-
-    public static function empty()
-    {
-        self::required();
-        return;
-    }
-}
-
 class Verify
 {
     /*
 
     */
+    public static $error;
+    public static $flag;
+    public static $required;
 
     private $value;
+
+    /*
+
+    */
+    public static function errorSet(string $key)
+    {
+        self::$error[$key] = true;
+
+        self::$flag = true;
+    }
 
     /*
 
@@ -68,23 +31,34 @@ class Verify
 
     private function __construct(string &$data)
     {
-        Err::init();
+        //
+        self::$error = array();
 
+        self::$flag = false;
+
+        self::$required = false;
+
+        //
         $data = mb_convert_encoding($data, "UTF-8", "auto");
         $this->value = &$data;
     }
 
     public function result()
     {
-        if (Err::$required === true) {
-            Err::$error['errFlag'] = Err::$flag;
+        //
+        self::$error['paramData'] = $this->value;
+
+        //
+        if (self::$required === true) {
+            self::$error['errorFlag'] = self::$flag;
         } elseif ($this->value !== "") {
-            Err::$error['errFlag'] = Err::$flag;
+            self::$error['errorFlag'] = self::$flag;
         } else {
-            Err::$error['errFlag'] = false;
+            self::$error['errorFlag'] = false;
         }
 
-        return Err::$error;
+        //
+        return self::$error;
     }
 
     /*
@@ -168,7 +142,7 @@ class Verify
     public function space()
     {
         if (preg_match('#(\s|　)#', $this->value)) {
-            Err::set("space");
+            self::errorSet("space");
         }
 
         return $this;
@@ -180,10 +154,10 @@ class Verify
 
     public function required()
     {
-        Err::required();
+        self::$required = true;
 
         if (empty($this->value) && $this->value !== 0 && $this->value !== "0") {
-            Err::set("required");
+            self::errorSet("required");
         }
 
         return $this;
@@ -202,9 +176,7 @@ class Verify
 
     public function empty() // プログラムを見やすくするためのダミーメゾッド
     {
-        Err::empty();
-
-        return $this;
+        return self::required();
     }
 
 /*    public function null()
@@ -220,7 +192,7 @@ class Verify
     public function add($var)
     {
         if (! is_numeric($var)) {
-            Err::set("add");
+            self::errorSet("add");
             return $this;
         }
 
@@ -261,7 +233,7 @@ class Verify
     public function equal($var)
     {
         if ($this->value !== $var) {
-            Err::set("equal");
+            self::errorSet("equal");
         }
 
         return $this;
@@ -270,7 +242,7 @@ class Verify
     public function len($var)
     {
         if (mb_strlen($this->value) === $var) {
-            Err::set("len");
+            self::errorSet("len");
         }
 
         return $this;
@@ -279,7 +251,7 @@ class Verify
     public function lenMax($var)
     {
         if (mb_strlen($this->value) > $var) {
-            Err::set("lenMax");
+            self::errorSet("lenMax");
         }
 
         return $this;
@@ -288,7 +260,7 @@ class Verify
     public function lenMin($var)
     {
         if (mb_strlen($this->value) < $var) {
-            Err::set("lenMin");
+            self::errorSet("lenMin");
         }
 
         return $this;
@@ -297,7 +269,7 @@ class Verify
     public function length($min, $max)
     {
         if (mb_strlen($this->value) < $min || mb_strlen($this->value) > $max) {
-            Err::set("length");
+            self::errorSet("length");
         }
 
         return $this;
@@ -307,12 +279,12 @@ class Verify
     public function max($var)
     {
         if (! is_numeric($var)) {
-            Err::set("digit");
+            self::errorSet("digit");
             return $this;
         }
 
         if ($this->value > (int)$var) {
-            Err::set("max");
+            self::errorSet("max");
         }
 
         return $this;
@@ -321,12 +293,12 @@ class Verify
     public function min($var)
     {
         if (! is_numeric($var)) {
-            Err::set("digit");
+            self::errorSet("digit");
             return $this;
         }
 
         if ($this->value < (int)$var) {
-            Err::set("min");
+            self::errorSet("min");
         }
 
         return $this;
@@ -335,12 +307,12 @@ class Verify
     public function minMax($min, $max)
     {
         if (! is_numeric($min) || ! is_numeric($max)) {
-            Err::set("digit");
+            self::errorSet("digit");
             return $this;
         }
 
         if ($this->value < (int)$min || $this->value > (int)$max) {
-            Err::set("minMax");
+            self::errorSet("minMax");
         }
 
         return $this;
@@ -350,7 +322,7 @@ class Verify
     public function email()
     {
         if (! filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
-            Err::set("email");
+            self::errorSet("email");
         }
 
         return $this;
@@ -359,7 +331,7 @@ class Verify
     public function pregMatch($name, $preg)
     {
         if (! preg_match('#'.$preg.'#', $this->value)) {
-            Err::set("match:".$name);
+            self::errorSet("match:".$name);
         }
 
         return $this;
@@ -368,7 +340,7 @@ class Verify
     public function url()
     {
         if (! preg_match('#\Ahttps?://[\w\:\%\#\$\&\?\(\)\~\.\=\+\-\/\S]+\z#', $this->value)) {
-            Err::set("url");
+            self::errorSet("url");
         }
 
         return $this;
@@ -377,7 +349,7 @@ class Verify
     public function alpha()
     {
         if (! preg_match('#\A[a-zA-Z]+\z#', $this->value)) {
-            Err::set("alpha");
+            self::errorSet("alpha");
         }
 
         return $this;
@@ -386,7 +358,7 @@ class Verify
     public function digit()
     {
         if (! is_numeric($this->value)) {
-            Err::set("digit");
+            self::errorSet("digit");
         }
 
         // int()?
@@ -397,7 +369,7 @@ class Verify
     public function alphanumeric()
     {
         if (! preg_match('#\A[a-zA-Z0-9]+\z#', $this->value)) {
-            Err::set("alphanumeric");
+            self::errorSet("alphanumeric");
         }
 
         return $this;
@@ -435,7 +407,7 @@ class Verify
     public function password()
     {
         if (! preg_match('#\A[a-zA-Z0-9\@\%\+\$\\\/\!\#\^\~\:\.\?\-\_]+\z#', $this->value)) {
-            Err::set("password");
+            self::errorSet("password");
         }
 
         return $this;
