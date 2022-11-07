@@ -2,28 +2,16 @@
 
 class Verify
 {
-    /*
-
-    */
-    public static $error;
-    public static $flag;
-    public static $required;
+    private $error;
+    private $flag;
+    private $required;
 
     private $value;
 
     /*
 
     */
-    public static function errorSet(string $key)
-    {
-        self::$error[$key] = true;
 
-        self::$flag = true;
-    }
-
-    /*
-
-    */
     public static function set(string &$data): Verify
     {
         return new Verify($data);
@@ -32,33 +20,40 @@ class Verify
     private function __construct(string &$data)
     {
         //
-        self::$error = array();
+        $this->error = array();
 
-        self::$flag = false;
+        $this->flag = false;
 
-        self::$required = false;
+        $this->required = false;
 
         //
         $data = mb_convert_encoding($data, "UTF-8", "auto");
         $this->value = &$data;
     }
 
+    private function errorSet(string $key)
+    {
+        $this->error[$key] = true;
+
+        $this->flag = true;
+    }
+
     public function result()
     {
         //
-        self::$error['paramData'] = $this->value;
+        $this->error['paramData'] = $this->value;
 
         //
-        if (self::$required === true) {
-            self::$error['errorFlag'] = self::$flag;
+        if ($this->required === true) {
+            $this->error['errorFlag'] = $this->flag;
         } elseif ($this->value !== "") {
-            self::$error['errorFlag'] = self::$flag;
+            $this->error['errorFlag'] = $this->flag;
         } else {
-            self::$error['errorFlag'] = false;
+            $this->error['errorFlag'] = false;
         }
 
         //
-        return self::$error;
+        return $this->error;
     }
 
     /*
@@ -154,7 +149,7 @@ class Verify
 
     public function required()
     {
-        self::$required = true;
+        $this->required = true;
 
         if (empty($this->value) && $this->value !== 0 && $this->value !== "0") {
             self::errorSet("required");
