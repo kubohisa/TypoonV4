@@ -14,20 +14,20 @@ class Err
     public static function set(string $key)
     {
         self::$error[$key] = true;
-		
-        self::$errorKey = true;		
+
+        self::$errorKey = true;
         self::$flag = true;
     }
 
     public static function init()
     {
-		//
+        //
         self::$error = array();
 
         //
         self::$flag = false;
         self::$errorKey = false;
-		
+
         self::$required = false;
     }
 
@@ -74,7 +74,7 @@ class Verify
     private function __construct(string &$data)
     {
         Err::init();
-		
+
         $data = mb_convert_encoding($data, "UTF-8", "auto");
         $this->value = &$data;
     }
