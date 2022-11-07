@@ -135,11 +135,11 @@
         exit;
     }
 
-    if (file_exists(".".$_SERVER["REQUEST_URI"]) && $_SERVER["REQUEST_URI"] !== "/") {
+    if ($URI === "/favicon.ico") {
         return false;
     }
 
-    if ($URI === "/favicon.ico") {
+    if (file_exists(".".$_SERVER["REQUEST_URI"]) && $_SERVER["REQUEST_URI"] !== "/") {
         return false;
     }
 

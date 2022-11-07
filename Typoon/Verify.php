@@ -8,47 +8,49 @@ class Err
     public static $errorKey;
     public static $required;
 
-    public static $key;
     public static $flag;
 
     //
     public static function set(string $key)
     {
-        self::$error[self::$key][$key] = true;
-        self::$errorKey[self::$key] = true;
+        self::$error[$key] = true;
+		
+        self::$errorKey = true;		
         self::$flag = true;
     }
 
     public static function init()
     {
+		//
         self::$error = array();
-        self::$errorKey = array();
-        self::$required = array();
 
-        self::$key = "";
+        //
         self::$flag = false;
+        self::$errorKey = false;
+		
+        self::$required = false;
     }
 
     //
     public static function flag(string $key)
     {
-        if (self::$required[$key] === true) {
-            return self::$errorKey[$key];
+        if (self::$required === true) {
+            return self::$errorKey;
         } elseif ($_POST[$key] !== "") {
-            return self::$errorKey[$key];
+            return self::$errorKey;
         }
         return false;
     }
 
     public static function required()
     {
-        self::$required[self::$key] = true;
+        self::$required = true;
         return;
     }
 
     public static function empty()
     {
-        self::$required[self::$key] = false;
+        self::$required = false;
         return;
     }
 }
@@ -64,19 +66,17 @@ class Verify
     /*
 
     */
-    public static function set(string $key, string &$data): Verify
+    public static function set(string &$data): Verify
     {
-        Err::$errorKey[$key] = false;
-        Err::$required[$key] = false;
-
-        return new Verify($key, $data);
+        return new Verify($data);
     }
 
-    private function __construct(string $key, string &$data)
+    private function __construct(string &$data)
     {
+        Err::init();
+		
         $data = mb_convert_encoding($data, "UTF-8", "auto");
         $this->value = &$data;
-        Err::$key = $key;
     }
 
     /*
