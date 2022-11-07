@@ -5,17 +5,14 @@ Err::init();
 class Err
 {
     public static $error;
-    public static $errorKey;
-    public static $required;
-
     public static $flag;
+    public static $required;
 
     //
     public static function set(string $key)
     {
         self::$error[$key] = true;
 
-        self::$errorKey = true;
         self::$flag = true;
     }
 
@@ -24,9 +21,7 @@ class Err
         //
         self::$error = array();
 
-        //
         self::$flag = false;
-        self::$errorKey = false;
 
         self::$required = false;
     }
@@ -35,9 +30,9 @@ class Err
     public static function flag(string $key)
     {
         if (self::$required === true) {
-            return self::$errorKey;
+            return self::$flag;
         } elseif ($_POST[$key] !== "") {
-            return self::$errorKey;
+            return self::$flag;
         }
         return false;
     }
