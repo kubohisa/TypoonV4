@@ -45,7 +45,7 @@ class Err
 
     public static function empty()
     {
-        self::$required = false;
+        self::required();
         return;
     }
 }
@@ -72,6 +72,19 @@ class Verify
 
         $data = mb_convert_encoding($data, "UTF-8", "auto");
         $this->value = &$data;
+    }
+
+    public function result()
+    {
+        if (Err::$required === true) {
+            Err::$error['errFlag'] = Err::$flag;
+        } elseif ($this->value !== "") {
+            Err::$error['errFlag'] = Err::$flag;
+        } else {
+            Err::$error['errFlag'] = false;
+        }
+
+        return Err::$error;
     }
 
     /*
