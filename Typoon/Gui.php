@@ -92,7 +92,7 @@ class Gui
         //
         $html = '<div class="row">';
 
-        $html .= '<div class="col"><select class="form-select" name="year'.$name.'">'.Form::select(
+        $html .= '<div class="col"><select class="form-select" name="year'.$name.'">'.self::select(
             [
                     2022, 2023
                 ],
@@ -100,7 +100,7 @@ class Gui
             2022
         )."</select> 年 </div>";
 
-        $html .= '<div class="col"><select class="form-select" name="month'.$name.'">'.Form::select(
+        $html .= '<div class="col"><select class="form-select" name="month'.$name.'">'.self::select(
             [
                     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
                 ],
@@ -108,7 +108,7 @@ class Gui
             1
         )."</select> 月 </div>";
 
-        $html .= '<div class="col"><select class="form-select" name="day'.$name.'">'.Form::select(
+        $html .= '<div class="col"><select class="form-select" name="day'.$name.'">'.self::select(
             [
                     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                     11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -118,7 +118,7 @@ class Gui
             1
         )."</select> 日 </div>";
 
-        $html .= '<div class="col"><select class="form-select" name="hour'.$name.'">'.Form::select(
+        $html .= '<div class="col"><select class="form-select" name="hour'.$name.'">'.self::select(
             [
                     0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                     10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -127,7 +127,7 @@ class Gui
             $h
         )."</select> 時 </div>";
 
-        $html .= '<div class="col"><select class="form-select" name="minute'.$name.'">'.Form::select(
+        $html .= '<div class="col"><select class="form-select" name="minute'.$name.'">'.self::select(
             [
                     0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                     10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
