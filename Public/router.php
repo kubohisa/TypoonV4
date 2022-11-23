@@ -81,6 +81,10 @@
 
     require_once("../Typoon/Router/setting.php");
 
+    // if (!defined('systemName')) exit;
+
+    define("systemName", "TypoonV4");
+
     // Session Seting.
 
     ini_set('session.cookie_httponly', 1); // http only.
