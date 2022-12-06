@@ -85,14 +85,22 @@
 
     define("systemName", "TypoonV4");
 
+    // HTTPS?
+
+    $_SERVER = sanitizer($_SERVER);
+
+    if ($TyHttps === true && empty($_SERVER['HTTPS'])) {
+        exit;
+    }
+
     // Session Seting.
 
     ini_set('session.cookie_httponly', 1); // http only.
 
     ini_set('session.use_strict_mode', 1); // server mode only.
 
-    if ($TyHttps === true) {
-        ini_set('session.cookie_secure', 0);
+    if (isset($_SERVER['HTTPS'])) {
+        ini_set('session.cookie_secure', 1);
     } // if https then.
 
     session_name($TySessionName);
@@ -113,14 +121,6 @@
         ini_set('display_startup_errors', 'Off');
         ini_set('error_reporting', E_ALL);
         ini_set('log_errors', 'On');
-    }
-
-    // HTTPS?
-
-    $_SERVER = sanitizer($_SERVER);
-
-    if ($TyHttps === true && empty($_SERVER['HTTPS'])) {
-        exit;
     }
 
     // Domainチェック
